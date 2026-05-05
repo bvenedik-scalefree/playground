@@ -1,0 +1,57 @@
+version: 2
+
+sources:
+  - name: TPCH
+    database: SNOWFLAKE_SAMPLE_DATA  
+    schema: TPCH_SF10
+    tables:
+      - name: REGION
+        columns:
+          - name: r_regionkey
+            tests:
+              - unique
+              - not_null
+      - name: CUSTOMER
+        columns:
+          - name: c_custkey
+            tests:
+              - unique
+              - not_null
+      - name: ORDERS
+        columns:
+          - name: o_orderkey
+            tests:
+              - unique
+              - not_null
+      - name: LINEITEM
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              arguments:
+                - L_ORDERKEY
+                - L_PARTKEY
+                - L_SUPPKEY
+                - L_LINENUMBER
+      - name: PART
+        columns:
+          - name: p_partkey
+            tests:
+              - unique
+              - not_null
+      - name: PARTSUPP
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              arguments:
+                - ps_partkey
+                - ps_suppkey
+      - name: SUPPLIER
+        columns:
+          - name: s_suppkey
+            tests:
+              - unique
+              - not_null
+      - name: NATION
+        columns:
+          - name: n_nationkey
+            tests:
+              - unique
+              - not_null
